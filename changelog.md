@@ -1,8 +1,8 @@
 # 0.4 (unreleased)
 
-- separate clouds from title background, animate clouds layer
 - fix camp UI a bit
-- try to fix sound issues
+- add healing items drop from the monsters to help with game balance
+- separate clouds from title background, animate clouds layer
 
 # 0.3
 

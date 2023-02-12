@@ -14,28 +14,30 @@ class Camp extends Scene {
 
     bg = new h2d.Object(s2d);
     var b0 = new h2d.Bitmap(hxd.Res.titlebg0.toTile(), bg);
-    var b1 = new h2d.Bitmap(hxd.Res.camp.toTile(), bg);
+    var camp_ui = new h2d.Bitmap(hxd.Res.camp.toTile(), bg);
+    camp_ui.setPosition(0, 100);
+
     font = hxd.Res.fonts.alagard.toFont();
 
     Main.drawSoundControls(s2d);
-    floorUI = new h2d.Text(font, s2d);
+    floorUI = new h2d.Text(font, camp_ui);
     floorUI.x = Const.campUIPosition[0];
     floorUI.y = Const.campUIPosition[1];
     floorUI.textColor = Const.textColor;
     floorUI.textAlign = Center;
     floorUI.text = 'Camp';
 
-    hpUI = new h2d.Text(font, s2d);
+    hpUI = new h2d.Text(font, camp_ui);
     hpUI.x = Const.campHpUIPosition[0];
     hpUI.y = Const.campHpUIPosition[1];
     hpUI.textColor = Const.textColor;
 
-    goldUI = new h2d.Text(font, s2d);
+    goldUI = new h2d.Text(font, camp_ui);
     goldUI.x = Const.campGoldUIPosition[0];
     goldUI.y = Const.campGoldUIPosition[1];
     goldUI.textColor = Const.textColor;
 
-    description = new h2d.Text(font, s2d);
+    description = new h2d.Text(font, camp_ui);
     description.x = Const.descriptionCampPosition[0];
     description.y = Const.descriptionCampPosition[1];
     description.textColor = Const.textColor;
@@ -61,14 +63,14 @@ class Camp extends Scene {
 
     Main.saveAll();
 
-    var entranceAtext = new h2d.Text(font, s2d);
+    var entranceAtext = new h2d.Text(font, camp_ui);
     entranceAtext.x = Const.entranceAPosition[0];
     entranceAtext.y = Const.entranceAPosition[1];
     entranceAtext.textColor = Const.textColor;
     entranceAtext.textAlign = Center;
     entranceAtext.text = 'Floor 1';
 
-    var entranceAimg = new h2d.Bitmap(hxd.Res.entrance.toTile(), s2d);
+    var entranceAimg = new h2d.Bitmap(hxd.Res.entrance.toTile(), camp_ui);
     entranceAimg.setPosition(Const.entranceAImagePosition[0], Const.entranceAImagePosition[1]);
 
     if (Main.maxVisitedFloor >= 1) {
@@ -100,14 +102,14 @@ class Camp extends Scene {
       unavailableA.text = 'Unavailable';
     }
 
-    var entranceBtext = new h2d.Text(font, s2d);
+    var entranceBtext = new h2d.Text(font, camp_ui);
     entranceBtext.x = Const.entranceBPosition[0];
     entranceBtext.y = Const.entranceBPosition[1];
     entranceBtext.textColor = Const.textColor;
     entranceBtext.textAlign = Center;
     entranceBtext.text = 'Floor 25';
 
-    var entranceBimg = new h2d.Bitmap(hxd.Res.entrance.toTile(), s2d);
+    var entranceBimg = new h2d.Bitmap(hxd.Res.entrance.toTile(), camp_ui);
     entranceBimg.setPosition(Const.entranceBImagePosition[0], Const.entranceBImagePosition[1]);
 
     if (Main.maxVisitedFloor >= 25) {
@@ -136,17 +138,17 @@ class Camp extends Scene {
       unavailableB.y = 107;
       unavailableB.textColor = 0xFFFFFF;
       unavailableB.textAlign = Center;
-      unavailableB.text = 'Unavailable';
+      unavailableB.text = 'Unavailable\n${Main.maxVisitedFloor}/25';
     }
 
-    var entranceCtext = new h2d.Text(font, s2d);
+    var entranceCtext = new h2d.Text(font, camp_ui);
     entranceCtext.x = Const.entranceCPosition[0];
     entranceCtext.y = Const.entranceCPosition[1];
     entranceCtext.textColor = Const.textColor;
     entranceCtext.textAlign = Center;
     entranceCtext.text = 'Floor 50';
 
-    var entranceCimg = new h2d.Bitmap(hxd.Res.entrance.toTile(), s2d);
+    var entranceCimg = new h2d.Bitmap(hxd.Res.entrance.toTile(), camp_ui);
     entranceCimg.setPosition(Const.entranceCImagePosition[0], Const.entranceCImagePosition[1]);
 
     if (Main.maxVisitedFloor >= 50) {
@@ -175,7 +177,7 @@ class Camp extends Scene {
       unavailableC.y = 107;
       unavailableC.textColor = 0xFFFFFF;
       unavailableC.textAlign = Center;
-      unavailableC.text = 'Unavailable';
+      unavailableC.text = 'Unavailable\n${Main.maxVisitedFloor}/50';
     }
   }
 

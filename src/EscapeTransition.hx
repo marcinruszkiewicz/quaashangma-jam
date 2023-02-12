@@ -60,7 +60,7 @@ class EscapeTransition extends Scene {
       Main.currentFloor = 1;
       Main.currentRooms = 0;
       Main.gold = 0;
-      Main.instance = new Title();
+      Main.instance = new Camp();
     };
     i.onOver = function(_) {
       if (Main.playSound) {

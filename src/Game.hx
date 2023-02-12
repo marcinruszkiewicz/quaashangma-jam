@@ -137,7 +137,7 @@ class Game extends Scene {
     } else {
       Main.floorplan.visited[Main.currentRooms][i] = 1;
 
-      var visitedIcon = new h2d.Bitmap(hxd.Res.visited.toTile(), rooms[i]);
+      var visitedIcon = new h2d.Bitmap(hxd.Res.checkmark.toTile(), rooms[i]);
       visitedIcon.setPosition(2, 180);
 
       switch (Main.floorplan.rooms[Main.currentRooms][i]) {
@@ -156,12 +156,22 @@ class Game extends Scene {
           } else {
             room_description += '\nYou manage to defeat the monsters.';
           }
+
+          var drop = Std.random(31);
+          if (drop <= 10) {
+            room_description += '\nOne of the monsters drops a healing potion.';
+            if (Main.HP + 5 >= Main.maxHP) {
+              Main.HP = Main.maxHP;
+            } else {
+              Main.HP += 5;
+            }
+          }
         case 2:
           room_description += Const.TrapRoomText[Std.random(Const.TrapRoomText.length)];
 
           // trap room
           var rand = Std.random(2);
-          var hp = Std.random(Main.currentFloor) + Std.random(3);
+          var hp = Std.random(Main.currentFloor) + Std.random(4);
 
           switch(rand) {
             case 0:
@@ -172,7 +182,11 @@ class Game extends Scene {
               if (Main.HP <= 0) {
                 Main.instance = new EscapeTransition();
               } else {
-                room_description += '\nThe trap has taken $hp HP from you.';
+                if (hp == 0) {
+                  room_description += "\nYou easily avoid the trap.";
+                } else {
+                  room_description += '\nThe trap has taken $hp HP from you.';
+                }
               }
           }
         case 3:

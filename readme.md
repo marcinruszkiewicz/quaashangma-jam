@@ -18,7 +18,9 @@ Because of this, the Adventurers Guild outfits every one going in with a special
 
 This is a version done in about a week (including installing Haxe and figuring out how to do anything in it) for the [HaxeJam 2023: Winter Jam](https://itch.io/jam/haxejam-2023-winter-jam). Due to time constraints (and my regular day job during the week) it's not very advanced. I will be updating the game in the future, as I find the idea pretty entertaining and worth expanding on.
 
-You can see the sources on my [Github](https://github.com/marcinruszkiewicz/quaashangma-jam).
+Mostly I'd like to provide more storytelling through this game, which was a really hard thing to do when I've spent most of the time learning how the engine works and how to do anything in it. I believe there's some potential there, though.
+
+You can see the sources for this version on my [Github](https://github.com/marcinruszkiewicz/quaashangma-jam).
 
 # Credits and acknowledments
 
