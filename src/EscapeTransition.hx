@@ -24,6 +24,8 @@ class EscapeTransition extends Scene {
     var b1 = new h2d.Bitmap(hxd.Res.floortransition.toTile(), bg);
     font = hxd.Res.fonts.alagard.toFont();
 
+    Main.drawSoundControls(s2d);
+
     floorUI = new h2d.Text(font, s2d);
     floorUI.x = Const.floorTransitionUIPosition[0];
     floorUI.y = Const.floorTransitionUIPosition[1];
@@ -52,12 +54,18 @@ class EscapeTransition extends Scene {
 
     var i = new h2d.Interactive(300, 64, backbutton);
     i.onClick = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       Main.currentFloor = 1;
       Main.currentRooms = 0;
       Main.gold = 0;
       Main.instance = new Title();
     };
     i.onOver = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       backtext.textColor = Const.hoverColor;
     };
     i.onOut = function(_) {

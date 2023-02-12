@@ -1,9 +1,13 @@
+# 0.4 (unreleased)
+
+- separate clouds from title background, animate clouds layer
+- fix camp UI a bit
+- try to fix sound issues
+
 # 0.3
 
-- title screen
-  - separate clouds from background, animate clouds layer
-
-- ui fixes
+- background music and controls for sound and music
+- sounds
 - save system
 
 # 0.2
@@ -26,7 +30,7 @@
 
 - camp screen
   - convert gold to max hp so exploration gets easier
-  -
+  - choose to start from further dungeon levels if you explored far enough
 
 # 0.1
 

@@ -24,6 +24,9 @@ class FloorTransition extends Scene {
     }
 
     var b1 = new h2d.Bitmap(hxd.Res.floortransition.toTile(), bg);
+
+    Main.drawSoundControls(s2d);
+
     font = hxd.Res.fonts.alagard.toFont();
 
     floorUI = new h2d.Text(font, s2d);
@@ -54,11 +57,17 @@ class FloorTransition extends Scene {
 
     var i = new h2d.Interactive(300, 64, backbutton);
     i.onClick = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       Main.currentFloor = 1;
       Main.currentRooms = 0;
       Main.instance = new Camp();
     };
     i.onOver = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       backtext.textColor = Const.hoverColor;
     };
     i.onOut = function(_) {
@@ -77,6 +86,9 @@ class FloorTransition extends Scene {
 
     var i2 = new h2d.Interactive(300, 64, continuebutton);
     i2.onClick = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       Main.currentFloor++;
       Main.currentRooms = 0;
       if (Main.currentFloor > Main.maxVisitedFloor) {
@@ -85,6 +97,9 @@ class FloorTransition extends Scene {
       Main.instance = new Game();
     };
     i2.onOver = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       continuetext.textColor = Const.hoverColor;
     };
     i2.onOut = function(_) {

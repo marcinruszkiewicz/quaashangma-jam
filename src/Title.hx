@@ -6,13 +6,13 @@ class Title extends Scene {
   var start : h2d.Text;
 
   override function init() {
+    Main.loadSettings();
+
     s2d.scaleMode = Stretch(Const.W, Const.H);
     bg = new h2d.Object(s2d);
     var b1 = new h2d.Bitmap(hxd.Res.titlebg0.toTile(), bg);
 
     var font = hxd.Res.fonts.alagard.toFont();
-    var titlefont = hxd.Res.fonts.alagard96.toFont();
-
     var titlebg = new h2d.Bitmap(hxd.Res.titleui.toTile(), bg);
     titlebg.setPosition(234, 400);
 
@@ -36,10 +36,16 @@ class Title extends Scene {
 
     var i2 = new h2d.Interactive(160, 64, forwardbutton);
     i2.onClick = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       Main.instance = new Camp();
     };
     i2.onOver = function(_) {
       forwardtext.textColor = Const.hoverColor;
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
     };
     i2.onOut = function(_) {
       forwardtext.textColor = Const.textColor;
@@ -50,7 +56,16 @@ class Title extends Scene {
     copytext.x = 16;
     copytext.y = 700;
     copytext.textColor = 0xFFFFFF;
-    copytext.text = 'Version ${Const.Version}\nBuilt for HaxeJam 2023: Winter Jam.\nCopyright (C) 2023.';
+    copytext.text = 'Version ${Const.Version}\nBuilt for HaxeJam 2023: Winter Jam.\nCopyright (C) Saithir 2023';
+
+    Main.musicResource = if( hxd.res.Sound.supportedFormat(Mp3)) hxd.Res.music.heartbeat else null;
+    if(Main.musicResource != null){
+      if (Main.playMusic) {
+        Main.musicResource.play(true, 0.12);
+      }
+    }
+
+    Main.drawSoundControls(s2d);
   }
 
   static function main() {

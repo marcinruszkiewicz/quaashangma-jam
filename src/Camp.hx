@@ -17,6 +17,7 @@ class Camp extends Scene {
     var b1 = new h2d.Bitmap(hxd.Res.camp.toTile(), bg);
     font = hxd.Res.fonts.alagard.toFont();
 
+    Main.drawSoundControls(s2d);
     floorUI = new h2d.Text(font, s2d);
     floorUI.x = Const.campUIPosition[0];
     floorUI.y = Const.campUIPosition[1];
@@ -48,7 +49,7 @@ class Camp extends Scene {
       Main.maxHP += pots * 5;
       Main.gold -= pots * 15;
 
-      camp_description += '\nYou sell the treasures and buy $pots Stamina Potions, increasing your max HP by ${pots * 5}.';
+      camp_description += '\nYou sell the treasures and buy Stamina Potions, increasing your max HP by ${pots * 5}.';
     } else {
       camp_description += "\nYou see a Stamina Potion vendor that sells one potion for 15 gold. Not a bad price for 5 more max HP.";
     }
@@ -57,6 +58,8 @@ class Camp extends Scene {
     Main.HP = Main.maxHP;
     hpUI.text = 'HP: ${Main.HP}/${Main.maxHP}';
     goldUI.text = 'Gold: ${Main.gold}';
+
+    Main.saveAll();
 
     var entranceAtext = new h2d.Text(font, s2d);
     entranceAtext.x = Const.entranceAPosition[0];
@@ -71,6 +74,9 @@ class Camp extends Scene {
     if (Main.maxVisitedFloor >= 1) {
       var entranceAbutton = new h2d.Interactive(236, 246, entranceAimg);
       entranceAbutton.onOver = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         var g = new h2d.filter.Glow(0xFFFFFF, 100, 5);
         entranceAimg.filter = g;
       };
@@ -78,6 +84,9 @@ class Camp extends Scene {
         entranceAimg.filter = null;
       }
       entranceAbutton.onClick = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         Main.currentFloor = 1;
         Main.currentRooms = 0;
         Main.instance = new Game();
@@ -104,6 +113,9 @@ class Camp extends Scene {
     if (Main.maxVisitedFloor >= 25) {
       var entranceBbutton = new h2d.Interactive(236, 246, entranceBimg);
       entranceBbutton.onOver = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         var g = new h2d.filter.Glow(0xFFFFFF, 100, 5);
         entranceBimg.filter = g;
       };
@@ -111,6 +123,9 @@ class Camp extends Scene {
         entranceBimg.filter = null;
       }
       entranceBbutton.onClick = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         Main.currentFloor = 1;
         Main.currentRooms = 0;
         Main.instance = new Game();
@@ -137,6 +152,9 @@ class Camp extends Scene {
     if (Main.maxVisitedFloor >= 50) {
       var entranceCbutton = new h2d.Interactive(236, 246, entranceCimg);
       entranceCbutton.onOver = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         var g = new h2d.filter.Glow(0xFFFFFF, 100, 5);
         entranceCimg.filter = g;
       };
@@ -144,6 +162,9 @@ class Camp extends Scene {
         entranceCimg.filter = null;
       }
       entranceCbutton.onClick = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         Main.currentFloor = 1;
         Main.currentRooms = 0;
         Main.instance = new Game();

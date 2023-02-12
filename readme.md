@@ -16,13 +16,14 @@ Because of this, the Adventurers Guild outfits every one going in with a special
 
 # Jam Version?
 
-This is a version done in about a week (including installing Haxe and figuring out how to do anything in it) for the [HaxeJam 2023: Winter Jam](https://itch.io/jam/haxejam-2023-winter-jam). Due to time constraints (and my regular day job during the week) it's not very advanced. I will be updating the game in the future, as I find the idea pretty entertaining.
+This is a version done in about a week (including installing Haxe and figuring out how to do anything in it) for the [HaxeJam 2023: Winter Jam](https://itch.io/jam/haxejam-2023-winter-jam). Due to time constraints (and my regular day job during the week) it's not very advanced. I will be updating the game in the future, as I find the idea pretty entertaining and worth expanding on.
 
 You can see the sources on my [Github](https://github.com/marcinruszkiewicz/quaashangma-jam).
 
 # Credits and acknowledments
 
-- [Alagard font](https://opengameart.org/content/pixel-fonts-by-pix3m) by Pix3M (CC BY 3.0)
-- [UI elements](https://opengameart.org/content/fantasy-ui-elements-by-ravenmore) by Ravenmore (CC BY 3.0)
-- [Stone texture](https://opengameart.org/content/stone-texture-1) by EZduzziteh (CC BY 3.0)
-- [Some UI elements](https://www.kenney.nl) by Kenney (CC0)
+- [Alagard font by Pix3M](https://opengameart.org/content/pixel-fonts-by-pix3m) (CC BY 3.0)
+- [UI elements by Ravenmore](https://opengameart.org/content/fantasy-ui-elements-by-ravenmore) (CC BY 3.0)
+- [Stone texture by EZduzziteh](https://opengameart.org/content/stone-texture-1) (CC BY 3.0)
+- [Some UI elements and sounds by Kenney](https://www.kenney.nl) (CC0)
+- Music: [Heartbeat by Alexander Nakarada](https://www.serpentsoundstudios.com) (CC BY 4.0)

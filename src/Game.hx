@@ -52,6 +52,7 @@ class Game extends Scene {
     goldUI.y = Const.goldUIPosition[1];
     goldUI.textColor = Const.textColor;
 
+    Main.drawSoundControls(s2d);
     initDungeon();
   }
 
@@ -99,6 +100,9 @@ class Game extends Scene {
       roombuttons[i] = new h2d.Interactive(Const.RoomButtonSize[0], Const.RoomButtonSize[1], rooms[i]);
 
       roombuttons[i].onOver = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         hover(i);
       };
 
@@ -107,6 +111,9 @@ class Game extends Scene {
       }
 
       roombuttons[i].onClick = function(_) {
+        if (Main.playSound) {
+          hxd.Res.sound.click1.play();
+        }
         visitRoom(i);
       }
     }
@@ -212,6 +219,9 @@ class Game extends Scene {
 
     var i2 = new h2d.Interactive(160, 64, forwardbutton);
     i2.onClick = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       if (Main.floorplan.rooms[Main.currentRooms][i] == 4) {
         // load next floor
         Main.instance = new FloorTransition();
@@ -222,6 +232,9 @@ class Game extends Scene {
       }
     };
     i2.onOver = function(_) {
+      if (Main.playSound) {
+        hxd.Res.sound.click1.play();
+      }
       forwardtext.textColor = Const.hoverColor;
     };
     i2.onOut = function(_) {
