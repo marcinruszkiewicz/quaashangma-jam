@@ -1,0 +1,10 @@
+-cp src
+-lib heaps
+-main Main
+
+-D windowSize=768x768
+
+-js quaashangma-jam.js
+
+# -lib hlsdl
+# -hl hello.hl
