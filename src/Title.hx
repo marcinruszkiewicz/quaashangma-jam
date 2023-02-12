@@ -1,16 +1,21 @@
 import Const;
 
 class Title extends Scene {
-  var bg : h2d.Object;
-  var title : h2d.Text;
-  var start : h2d.Text;
+  var bg:h2d.Object;
+  var title:h2d.Text;
+  var start:h2d.Text;
+  var cloud_layer:h2d.Bitmap;
+  var cloud_layer2:h2d.Bitmap;
 
   override function init() {
     Main.loadSettings();
 
     s2d.scaleMode = Stretch(Const.W, Const.H);
     bg = new h2d.Object(s2d);
-    var b1 = new h2d.Bitmap(hxd.Res.titlebg0.toTile(), bg);
+    cloud_layer = new h2d.Bitmap(hxd.Res.clouds.toTile(), bg);
+    cloud_layer2 = new h2d.Bitmap(hxd.Res.clouds.toTile(), bg);
+    cloud_layer2.x = 1600;
+    var castle_layer = new h2d.Bitmap(hxd.Res.castle.toTile(), bg);
 
     var font = hxd.Res.fonts.alagard.toFont();
     var titlebg = new h2d.Bitmap(hxd.Res.titleui.toTile(), bg);
@@ -66,6 +71,22 @@ class Title extends Scene {
     }
 
     Main.drawSoundControls(s2d);
+  }
+
+  override function update(dt:Float) {
+    // rotate our object every frame
+    if( cloud_layer != null ) {
+      cloud_layer.x -= 25 * dt;
+      cloud_layer2.x -= 25 * dt;
+
+      if (cloud_layer.x <= -1600) {
+        cloud_layer.x = cloud_layer2.x + 1600;
+      }
+
+      if (cloud_layer2.x <= -1600) {
+        cloud_layer2.x = cloud_layer.x + 1600;
+      }
+    }
   }
 
   static function main() {

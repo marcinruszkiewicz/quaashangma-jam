@@ -7,13 +7,18 @@ class Camp extends Scene {
   var floorUI:h2d.Text;
   var hpUI:h2d.Text;
   var goldUI:h2d.Text;
+  var cloud_layer:h2d.Bitmap;
+  var cloud_layer2:h2d.Bitmap;
 
   override function init() {
     s2d.scaleMode = Stretch(Const.W, Const.H);
     s2d.removeChildren();
 
     bg = new h2d.Object(s2d);
-    var b0 = new h2d.Bitmap(hxd.Res.titlebg0.toTile(), bg);
+    cloud_layer = new h2d.Bitmap(hxd.Res.clouds.toTile(), bg);
+    cloud_layer2 = new h2d.Bitmap(hxd.Res.clouds.toTile(), bg);
+    cloud_layer2.x = 1600;
+    var castle_layer = new h2d.Bitmap(hxd.Res.castle.toTile(), bg);
     var camp_ui = new h2d.Bitmap(hxd.Res.camp.toTile(), bg);
     camp_ui.setPosition(0, 100);
 
@@ -178,6 +183,22 @@ class Camp extends Scene {
       unavailableC.textColor = 0xFFFFFF;
       unavailableC.textAlign = Center;
       unavailableC.text = 'Unavailable\n${Main.maxVisitedFloor}/50';
+    }
+  }
+
+  override function update(dt:Float) {
+    // rotate our object every frame
+    if( cloud_layer != null ) {
+      cloud_layer.x -= 25 * dt;
+      cloud_layer2.x -= 25 * dt;
+
+      if (cloud_layer.x <= -1600) {
+        cloud_layer.x = cloud_layer2.x + 1600;
+      }
+
+      if (cloud_layer2.x <= -1600) {
+        cloud_layer2.x = cloud_layer.x + 1600;
+      }
     }
   }
 

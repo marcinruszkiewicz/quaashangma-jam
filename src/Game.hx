@@ -232,8 +232,8 @@ class Game extends Scene {
     forwardtext.textColor = Const.textColor;
     forwardtext.textAlign = Center;
 
-    var i2 = new h2d.Interactive(160, 64, forwardbutton);
-    i2.onClick = function(_) {
+    var forward_int = new h2d.Interactive(160, 64, forwardbutton);
+    forward_int.onClick = function(_) {
       if (Main.playSound) {
         hxd.Res.sound.click1.play();
       }
@@ -246,13 +246,13 @@ class Game extends Scene {
         initRooms();
       }
     };
-    i2.onOver = function(_) {
+    forward_int.onOver = function(_) {
       if (Main.playSound) {
         hxd.Res.sound.click1.play();
       }
       forwardtext.textColor = Const.hoverColor;
     };
-    i2.onOut = function(_) {
+    forward_int.onOut = function(_) {
       forwardtext.textColor = Const.textColor;
     };
   }

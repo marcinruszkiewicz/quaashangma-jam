@@ -1,5 +1,5 @@
 class Const {
-  public static inline var Version = '0.3';
+  public static inline var Version = '0.4';
   public static inline var W = 768;
   public static inline var H = 768;
   public static var RoomPositions = [[260, 89], [7, 342], [260, 342], [514, 342]];

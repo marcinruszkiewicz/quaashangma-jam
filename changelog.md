@@ -1,4 +1,4 @@
-# 0.4 (unreleased)
+# 0.4
 
 - fix camp UI a bit
 - add healing items drop from the monsters to help with game balance
