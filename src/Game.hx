@@ -165,6 +165,7 @@ class Game extends Scene {
             } else {
               Main.HP += 5;
             }
+            hpUI.text = 'HP: ${Main.HP}/${Main.maxHP}';
           }
         case 2:
           room_description += Const.TrapRoomText[Std.random(Const.TrapRoomText.length)];
