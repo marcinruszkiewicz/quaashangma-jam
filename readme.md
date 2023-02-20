@@ -1,3 +1,7 @@
+# Play the game!
+
+You can play the game [here on Itch.io](https://aevi.itch.io/quaashangma-jam).
+
 # Quaashangma
 
 A remnant of the Hundred Year Demon War. The outside fortress is mostly in ruins now, except for the camp the Adventurers Guild set up to support exploration of the dungeon.
@@ -16,7 +20,9 @@ Because of this, the Adventurers Guild outfits every one going in with a special
 
 # Jam Version?
 
-This is a version done in about a week (including installing Haxe and figuring out how to do anything in it) for the [HaxeJam 2023: Winter Jam](https://itch.io/jam/haxejam-2023-winter-jam). Due to time constraints (and my regular day job during the week) it's not very advanced. I will be updating the game in the future, as I find the idea pretty entertaining and worth expanding on.
+Original version was done in about a week (including installing Haxe and figuring out how to do anything in it) for the [HaxeJam 2023: Winter Jam](https://itch.io/jam/haxejam-2023-winter-jam). This one has been updated now, however you won't really find any new features - I just wanted to clear the code up so I can expand on it easier.
+
+I will be updating the game in the future, as I find the idea pretty entertaining and worth expanding on.
 
 Mostly I'd like to provide more storytelling through this game, which was a really hard thing to do when I've spent most of the time learning how the engine works and how to do anything in it. I believe there's some potential there, though.
 
