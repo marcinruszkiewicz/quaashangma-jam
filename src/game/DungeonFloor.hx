@@ -1,3 +1,5 @@
+package game;
+
 class DungeonFloor {
   public var rooms:Array<Array<Int>>;
   public var exit_path:Array<Int>;

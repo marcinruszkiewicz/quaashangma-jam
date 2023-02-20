@@ -1,3 +1,9 @@
+# 0.5
+
+- post Jam version
+- fix issues with text length by using a smaller fonts
+
+
 # 0.4
 
 - fix camp UI a bit

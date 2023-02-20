@@ -1,6 +1,8 @@
 -cp src
 -lib heaps
--main Main
+-lib deepnightLibs
+-lib heaps-aseprite
+-main App
 
 -D windowSize=768x768
 
