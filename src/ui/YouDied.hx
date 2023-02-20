@@ -58,6 +58,9 @@ class YouDied extends UiElement {
       if (App.playSound) {
         hxd.Res.sound.click1.play();
       }
+      App.currentFloor = 1;
+      App.currentRooms = 0;
+      App.gold = 0;
       App.instance = new game.Camp();
     };
     backint.onOver = function(_) {

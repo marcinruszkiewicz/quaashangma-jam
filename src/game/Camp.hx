@@ -11,6 +11,8 @@ class Camp extends Scene {
     description = new ui.CampUi(root, Const.DP_UI);
 
     new ui.SoundControls(root, Const.DP_UI);
+
+    App.saveAll();
   }
 
   override function update(dt:Float) {

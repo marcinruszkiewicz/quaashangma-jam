@@ -14,8 +14,8 @@ class App extends hxd.App {
 
   public static var maxVisitedFloor:Int = 1;
 
-  static var SETTINGSPATH:String = "Quaashangma/settings";
-  static var SAVEPATH:String = "Quaashangma/save";
+  static var SETTINGSPATH:String = "Quaashangma-jam/settings";
+  static var SAVEPATH:String = "Quaashangma-jam/save";
 
   public static function saveAll() {
     hxd.Save.save({
