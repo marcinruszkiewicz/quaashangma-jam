@@ -1,4 +1,4 @@
-
+[![Test Runner](https://github.com/marcinruszkiewicz/quaashangma-jam/actions/workflows/test_runner.yml/badge.svg)](https://github.com/marcinruszkiewicz/quaashangma-jam/actions/workflows/test_runner.yml)
 
 # Play the game!
 
