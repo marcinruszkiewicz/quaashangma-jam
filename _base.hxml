@@ -1,0 +1,7 @@
+-cp src
+
+-lib heaps
+-lib heaps-aseprite
+
+-dce full
+

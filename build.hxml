@@ -1,12 +1,8 @@
--cp src
--lib heaps
--lib deepnightLibs
--lib heaps-aseprite
+_base.hxml
+
 -main App
-
--D windowSize=768x768
-
 -js quaashangma-jam.js
 
+# -D windowSize=768x768
 # -lib hlsdl
 # -hl hello.hl

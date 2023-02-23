@@ -1,0 +1,18 @@
+name: Test Runner
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+jobs:
+  test:
+    uses: vegardit/haxe-reusable-workflows/.github/workflows/test-with-haxe.yml@v1
+    strategy:
+      fail-fast: false
+    with:
+      runner-os: ubuntu-latest
+      haxe-version: '4.2.5'
+      haxe-libs: heaps heaps-aseprite utest hashlink
+      test-node: true

@@ -1,0 +1,13 @@
+_base.hxml
+
+-cp test
+-lib haxe-doctest
+-lib utest
+
+-main TestRunner
+
+-D UTEST_PRINT_TESTS
+-D utest
+
+-js test.js
+-cmd node test.js --inspect
