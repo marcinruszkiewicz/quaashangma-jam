@@ -8,13 +8,11 @@ on:
     - master
 jobs:
   test:
+    uses: vegardit/haxe-reusable-workflows/.github/workflows/test-with-haxe.yml@v1
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: vegardit/haxe-reusable-workflows/.github/workflows/test-with-haxe.yml@v1
-      with:
-        haxe-version: '4.2.5'
-        haxe-libs: heaps heaps-aseprite utest hashlink
-        test-node: true
+    with:
+      haxe-version: '4.2.5'
+      haxe-libs: heaps heaps-aseprite utest hashlink
+      test-node: true
