@@ -23,6 +23,7 @@ jobs:
           haxelib install heaps
           haxelib install heaps-aseprite
           haxelib install utest
+          haxelib install haxe-doctest
 
       - name: "Run tests"
         run: haxe tests.hxml
