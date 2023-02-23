@@ -7,9 +7,6 @@ on:
     branches:
     - master
 
-env:
-  haxe-libs: heaps heaps-aseprite utest hashlink
-
 jobs:
   test:
     strategy:
@@ -23,7 +20,9 @@ jobs:
           haxe-version: 4.2.5
       - run: |
           haxe -version
-          haxelib install ${{ env.haxe-libs }}
+          haxelib install heaps
+          haxelib install heaps-aseprite
+          haxelib install utest
 
       - name: "Run tests"
         run: haxe tests.hxml
