@@ -6,12 +6,270 @@ on:
   pull_request:
     branches:
     - master
+
 jobs:
   test:
-    uses: vegardit/haxe-reusable-workflows/.github/workflows/test-with-haxe.yml@v1
+    haxe-version: 4.2.5
+    haxe-libs: heaps heaps-aseprite utest hashlink
     strategy:
       fail-fast: false
-    with:
-      runner-os: ubuntu-latest
-      haxe-version: '4.2.5'
-      haxe-libs: heaps heaps-aseprite utest hashlink
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Setup Haxe"
+        uses: actions/cache@v3
+        with:
+          path: ${{ runner.temp }}/haxe/sdk/haxe-${{ jobs.test.haxe-version }}
+          key: ${{ runner.os }}-haxe-${{ jobs.test.haxe-version }}
+
+      - name: "Setup Haxe: Install Binaries"
+        shell: bash
+        env:
+          HAXE_HOME: ${{ runner.temp }}/haxe/sdk/haxe-${{ inputs.haxe-version }}
+          HAXE_VERSION: ${{ inputs.haxe-version }}
+        run: |
+          echo "::group::Setup Haxe: Install Binaries"
+          set -euo pipefail
+          if [[ -n "${{ github.token }}" ]]; then
+            auth_header='-H "Authorization: token ${{ github.token }}"'
+          fi
+
+          export PATH="$HAXE_HOME:$PATH"
+          case "${{ runner.os }}" in
+            Linux)
+              if [[ ! -f "$HAXE_HOME/haxe" ]]; then
+                rm -rf "$HAXE_HOME"
+                if [[ $HAXE_VERSION == 'latest' ]]; then
+                  archive_url=$(eval curl -sSfL ${auth_header:-} https://api.github.com/repos/HaxeFoundation/haxe/releases | grep -o "https://.*/download/.*/haxe.*-linux64.tar.gz" | head -n 1)
+                elif [[ $HAXE_VERSION == 'nightly' ]]; then
+                  archive_url="https://build.haxe.org/builds/haxe/linux64/haxe_latest.tar.gz"
+                else
+                  archive_url="https://github.com/HaxeFoundation/haxe/releases/download/${HAXE_VERSION}/haxe-${HAXE_VERSION}-linux64.tar.gz"
+                fi
+                mkdir -p "$HAXE_HOME"
+                $(set -x; curl -sSfL $archive_url | tar -xz --strip-components=1 -C "$HAXE_HOME")
+              fi
+              echo "$HAXE_HOME" >> "$GITHUB_PATH"
+              echo "HAXEPATH=$HAXE_HOME" | tee -a "$GITHUB_ENV"
+              echo "HAXE_STD_PATH=$HAXE_HOME/std" | tee -a "$GITHUB_ENV"
+              (set -x; haxelib setup $HAXE_HOME/lib)
+              ;;
+            macOS)
+              if [[ ! -f "$HAXE_HOME/haxe" ]]; then
+                rm -rf "$HAXE_HOME"
+                if [[ $HAXE_VERSION == 'latest' ]]; then
+                  archive_url=$(eval curl -sSfL ${auth_header:-} https://api.github.com/repos/HaxeFoundation/haxe/releases | grep -o "https://.*/download/.*/haxe.*-osx.tar.gz" | head -n 1)
+                elif [[ $HAXE_VERSION == 'nightly' ]]; then
+                  archive_url="https://build.haxe.org/builds/haxe/mac/haxe_latest.tar.gz"
+                else
+                  archive_url="https://github.com/HaxeFoundation/haxe/releases/download/${HAXE_VERSION}/haxe-${HAXE_VERSION}-osx.tar.gz"
+                fi
+                mkdir -p "$HAXE_HOME"
+                $(set -x; curl -sSfL $archive_url | tar -xz --strip-components=1 -C "$HAXE_HOME")
+              fi
+              echo "$HAXE_HOME" >> "$GITHUB_PATH"
+              echo "HAXEPATH=$HAXE_HOME" | tee -a "$GITHUB_ENV"
+              echo "HAXE_STD_PATH=$HAXE_HOME/std" | tee -a "$GITHUB_ENV"
+
+              ln -sfv "$(dirname $(which neko))/libneko.2.dylib" "$HAXE_HOME/libneko.2.dylib" # workaround for "dyld: Library not loaded: @rpath/libneko.2.dylib"
+              (set -x; haxelib setup $HAXE_HOME/lib)
+              ;;
+            Windows)
+              HAXE_HOME=$(cygpath "$HAXE_HOME")
+              if [[ ! -f "$HAXE_HOME/haxe.exe" ]]; then
+                rm -rf "$HAXE_HOME"
+                if [[ $HAXE_VERSION == 'latest' ]]; then
+                  archive_url=$(eval curl -sSfL ${auth_header:-} https://api.github.com/repos/HaxeFoundation/haxe/releases | grep -o "https://.*/download/.*/haxe.*-win64.zip" | head -n 1)
+                elif [[ $HAXE_VERSION == 'nightly' ]]; then
+                  archive_url="https://build.haxe.org/builds/haxe/windows64/haxe_latest.zip"
+                elif [[ $HAXE_VERSION == 3.* ]]; then
+                  # Haxe 3 requires Neko 2.1 for which only 32bit binaries are available
+                  archive_url="https://github.com/HaxeFoundation/haxe/releases/download/${HAXE_VERSION}/haxe-${HAXE_VERSION}-win.zip"
+                else
+                  archive_url="https://github.com/HaxeFoundation/haxe/releases/download/${HAXE_VERSION}/haxe-${HAXE_VERSION}-win64.zip"
+                fi
+                mkdir -p "$HAXE_HOME"
+                $(set -x; curl -sSfL $archive_url -o "$HOME/haxe.zip")
+                unzip -q "$HOME/haxe.zip" -d "$HOME"
+                mv "$HOME/haxe"*/* "$HAXE_HOME"
+              fi
+              echo "$(cygpath -w "$HAXE_HOME")" >> "$GITHUB_PATH"
+              echo "HAXEPATH=$(cygpath -w "$HAXE_HOME")" | tee -a "$GITHUB_ENV"
+              echo "HAXE_STD_PATH=$(cygpath -w "$HAXE_HOME/std")" | tee -a "$GITHUB_ENV"
+
+              (set -x; haxelib setup "$(cygpath "$HAXE_HOME")\\lib")
+              ;;
+          esac
+          echo "::endgroup::"
+
+      - name: "Setup Haxe: Verify PATH"
+        shell: bash
+        run: haxe -version # haxe 3 only supports -version. haxe 4 also --version
+
+      - name: "Haxe Libs Cache: Restore"
+        id: HAXE-LIBS-CACHE-RESTORE
+        if: env.ACT != 'true' # https://github.com/nektos/act#skipping-steps
+        uses: actions/cache/restore@v3 # https://github.com/actions/cache/tree/main/restore
+        with:
+          path: |
+            ${{ runner.tool_cache }}/haxe/lib
+          # repo layout between haxe3 and 4 changed (and may change again) so we cache based on haxe version
+          key: ${{ runner.os }}-haxelibs-${{ inputs.haxe-version }}
+
+      - name: "Haxe Libs Cache: Init Root Path"
+        id: HAXE-TARGETS-CACHE
+        shell: bash
+        run: |
+          echo "::group::Haxe Libs Cache: Init Root Path"
+          set -euo pipefail
+          if [[ '${{ runner.os }}' == 'Windows' ]]; then
+            path_nix="$(cygpath '${{ runner.tool_cache }}')/haxe/lib"
+            echo 'path_win=${{ runner.tool_cache }}\haxe\lib' | tee -a "$GITHUB_OUTPUT"
+          else
+            path_nix='${{ runner.tool_cache }}/haxe/lib'
+          fi
+          mkdir -p "$path_nix"
+          echo "path_nix=$path_nix" | tee -a "$GITHUB_OUTPUT"
+          pushd "$path_nix"
+            # create a quick hashsum based on file names and file size
+            case '${{ runner.os }}' in
+              macOS) echo "initial_hash=$(find . -type f -print0 | xargs -0r stat -f '%N %z' | sort -z | shasum  | cut -d' ' -f1)" | tee -a "$GITHUB_OUTPUT" ;;
+              *)     echo "initial_hash=$(find . -type f -printf "%p %s\n" | sort -z | sha1sum | cut -d' ' -f1)" | tee -a "$GITHUB_OUTPUT" ;;
+            esac
+          popd
+          ls -l $path_nix
+          echo "::endgroup::"
+      - name: "Install: Haxe Libraries"
+        shell: bash
+        run: |
+          echo "::group::Install: Haxe Libraries"
+          set -euo pipefail
+          case '${{ runner.os }}' in
+            Windows)
+              export HAXELIB_PATH='${{ runner.tool_cache }}\haxe\lib'
+              mkdir -p "$(cygpath "$HAXELIB_PATH")"
+              ;;
+            *)
+              export HAXELIB_PATH='${{ runner.tool_cache }}/haxe/lib'
+              mkdir -p "$HAXELIB_PATH"
+              ;;
+          esac
+          echo "HAXELIB_PATH=$HAXELIB_PATH" | tee -a "$GITHUB_ENV"
+          haxelib config
+          haxelibs='${{ inputs.haxe-libs }}'
+          if [[ $TEST_CPP  == "true" ]]; then
+            if [[ '${{ inputs.haxe-version }}' == "nightly" ]]; then
+              echo "::group::install_hxcpp"
+              (set -x; haxelib git --always hxcpp https://github.com/HaxeFoundation/hxcpp.git)
+              pushd "$HAXELIB_PATH/hxcpp/git/tools/hxcpp"
+                haxe compile.hxml
+              popd
+              echo "::endgroup::"
+            else
+              haxelibs="hxcpp $haxelibs"
+            fi
+          fi
+          if [[ $TEST_CS   == "true" ]]; then haxelibs="hxcs $haxelibs"; fi
+          if [[ $TEST_JAVA == "true" || $TEST_JVM == "true" ]]; then
+            haxelibs="hxjava$([[ '${{ inputs.haxe-version }}' == 3.* ]] && echo '@3.2.0' || : ) $haxelibs"
+          fi
+          if [[ $TEST_NODE == "true" ]]; then haxelibs="hxnodejs $haxelibs"; fi
+          if [[ -n $haxelibs ]]; then
+            # https://stackoverflow.com/a/1521470/5116073
+            while read line || [[ -n $line ]]; do for lib in ${line%% #*}; do if [[ -n $lib ]]; then
+              echo "::group::install_$lib"
+              lib_name="${lib%%@*}"
+              lib_ver="$(echo "$lib" | cut -s -d@ -f2)"
+
+              # install from git
+              if [[ $lib_ver == *://* ]]; then
+                IFS='#' read -r -a lib_ver_splitted <<< "$lib_ver"
+
+                # in case it was already loaded from cache, delete it to prevent git errors like "You have divergent branches and need to specify how to reconcile them."
+                rm -rf "$HAXELIB_PATH/$lib_name/git"
+
+                (set -x; haxelib git --always "$lib_name" "${lib_ver_splitted[0]}" ${lib_ver_splitted[1]:-}) || exit $?
+                continue;
+              fi
+
+              # install from lib.haxe.org using curl instead of haxelib, which is faster and more robust
+              pushd "$HOME"
+                if [[ -z $lib_ver ]]; then
+                  echo "Determining latest version of '${lib_name}'..."
+                  lib_ver=$(curl -sSfL --max-time 5 --retry 3 -H "X-Haxe-Remoting: 1" \
+                    "https://lib.haxe.org/api/3.0/index.n?__x=ay3:apiy16:getLatestVersionhay${#lib_name}:${lib_name}h" \
+                  | cut -d: -f2)
+                fi
+
+                if [[ ! -f $HAXELIB_PATH/$lib_name/${lib_ver//./,}/haxelib.json ]]; then
+                  (set -x; curl -sSfL --connect-timeout 10 --retry 3 "https://lib.haxe.org/p/$lib_name/$lib_ver/download/" -o "$lib_name.zip") || exit $?
+                  (set -x; haxelib --always install "$lib_name.zip")
+                  rm "$lib_name.zip"
+                else
+                  echo "Library $lib_name $lib_ver is already present."
+                  (set -x; haxelib --always set "$lib_name" "$lib_ver")
+                fi
+              popd
+              echo "::endgroup::"
+            fi; done; done <<< "$haxelibs"
+          fi
+
+          if [[ -f haxelib.json ]]; then
+            haxelib dev "$(yq .name haxelib.json)" .
+          fi
+          echo "::endgroup::"
+
+
+      ##################################################
+      # Haxe Libs Cache Update
+      # See https://github.com/actions/cache/issues/342
+      ##################################################
+      - name: "Haxe Libs Cache: Prepare Update"
+        id: HAXE-LIBS-CACHE-UPDATE-PREPARE
+        if: env.ACT != 'true' # https://github.com/nektos/act#skipping-steps
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          echo "::group::Haxe Targets Cache: Prepare Update"
+            set -euo pipefail
+            if [[ '${{ steps.HAXE-LIBS-CACHE-RESTORE.outputs.cache-hit }}' == "true" ]]; then
+              pushd '${{ steps.haxe-targets.cache.outputs.path_nix }}'
+                # create a quick hashsum based on file names and file size
+                case '${{ runner.os }}' in
+                  macOS) current_hash="$(find . -type f -print0 | xargs -0r stat -f '%N %z' | sort -z | shasum  | cut -d' ' -f1)" ;;
+                  *)     current_hash="$(find . -type f -printf "%p %s\n" | sort -z | sha1sum | cut -d' ' -f1)" ;;
+                esac
+              popd
+              if [[ "$current_hash" != '${{ steps.haxe-targets.cache.outputs.initial_hash }}' ]]; then
+                echo "Cache update needed, since folder content changed. new hash: $current_hash"
+                primaryCacheKey='${{ steps.HAXE-LIBS-CACHE-RESTORE.outputs.cache-primary-key }}'
+                matchedCacheKey='${{ steps.HAXE-LIBS-CACHE-RESTORE.outputs.cache-matched-key }}'
+                if [[ $primaryCacheKey == "$matchedCacheKey" ]]; then
+                  gh extension install actions/gh-actions-cache || true
+                  if gh actions-cache delete "$primaryCacheKey" --confirm; then
+                    echo "need_cache_update=true" | tee -a "$GITHUB_OUTPUT"
+                  fi
+                else
+                  echo "need_cache_update=true" | tee -a "$GITHUB_OUTPUT"
+                fi
+              else
+                echo "No Cache update needed"
+              fi
+            else
+              echo "Cache update needed, since no cache hit occured"
+              echo "need_cache_update=true" | tee -a "$GITHUB_OUTPUT"
+            fi
+          echo "::endgroup::"
+      - name: "Haxe Libs Cache: Update"
+        uses: actions/cache/save@v3
+        if: steps.HAXE-LIBS-CACHE-UPDATE-PREPARE.outputs.need_cache_update == 'true'
+        with:
+          path: |
+            ${{ runner.tool_cache }}/haxe/lib
+          key: ${{ steps.HAXE-LIBS-CACHE-RESTORE.outputs.cache-primary-key }}
+
+      - name: "Run tests"
+        run: haxe tests.hxml
+
