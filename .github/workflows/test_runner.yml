@@ -15,4 +15,3 @@ jobs:
       runner-os: ubuntu-latest
       haxe-version: '4.2.5'
       haxe-libs: heaps heaps-aseprite utest hashlink
-      test-node: true
