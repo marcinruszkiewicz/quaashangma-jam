@@ -1,0 +1,7 @@
+_base.hxml
+
+-main App
+-lib hlsdl
+-D windowSize=768x768
+
+-hl quaashangma-jam.hl

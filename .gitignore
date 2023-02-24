@@ -2,3 +2,8 @@ res/.tmp
 .DS_Store
 *.psd
 *.js
+*.hl
+*.zip
+
+redist/*
+*.app

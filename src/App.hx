@@ -1,8 +1,8 @@
 class App extends hxd.App {
   public static var instance:Scene;
 
-  public static var playMusic:Bool = false;
-  public static var playSound:Bool = false;
+  public static var playMusic:Bool = true;
+  public static var playSound:Bool = true;
 
   public static var floorplan:game.DungeonFloor;
   public static var currentFloor:Int = 1;
@@ -14,10 +14,18 @@ class App extends hxd.App {
 
   public static var maxVisitedFloor:Int = 1;
 
-  static var SETTINGSPATH:String = "Quaashangma-jam/settings";
-  static var SAVEPATH:String = "Quaashangma-jam/save";
+  #if hl
+    static var SETTINGSPATH:String = Path.join([Sys.getEnv("APPDATA"), "Aevi/", "Quaashangma", "/settings"]);
+    static var SAVEPATH:String = Path.join([Sys.getEnv("APPDATA"), "Aevi/", "Quaashangma", "/save"]);
+  #else
+    static var SETTINGSPATH:String = "Quaashangma-jam/settings";
+    static var SAVEPATH:String = "Quaashangma-jam/save";
+  #end
 
   public static function saveAll() {
+    #if hl
+      sys.FileSystem.createDirectory(Path.directory(SAVEPATH));
+    #end
     hxd.Save.save({
       maxHP: maxHP,
       maxVisitedFloor: maxVisitedFloor,
@@ -26,6 +34,9 @@ class App extends hxd.App {
   }
 
   public static function saveSettings() {
+    #if hl
+      sys.FileSystem.createDirectory(Path.directory(SETTINGSPATH));
+    #end
     hxd.Save.save({
       music: playMusic,
       sound: playSound
@@ -50,7 +61,13 @@ class App extends hxd.App {
   }
 
   static function main() {
-    hxd.Res.initEmbed();
+    #if (hl && debug)
+      hxd.Res.initLocal();
+    #elseif (hl && !debug)
+      hxd.Res.initPak();
+    #else
+      hxd.Res.initEmbed();
+    #end
 
     loadSettings();
     loadAll();

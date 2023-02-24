@@ -10,4 +10,4 @@ _base.hxml
 -D utest
 
 -js test.js
--cmd node test.js --inspect
+-cmd node test.js
